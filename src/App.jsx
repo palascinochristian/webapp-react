@@ -4,6 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 //Pages
 import Home from "./pages/Home";
 import MoviePage from "./pages/MoviePage";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route index path="/" element={<Home />} />
           <Route path="/movies/:id" element={<MoviePage />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
