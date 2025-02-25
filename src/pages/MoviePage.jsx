@@ -27,9 +27,9 @@ export default function MoviePage() {
     <div className="container mx-auto p-6 text-white bg-blue-900 p-4 rounded-lg shadow-lg mt-4">
       <h2 className="text-2xl font-bold mb-2">Film</h2>
       <h1 className="text-4xl font-bold">{title}</h1>
-      <h2 className="text-xl">{director}</h2>
-      <h3 className="text-lg ">{genre}</h3>
-      <p>{release_year}</p>
+      <h2 className="text-xl">Director: {director}</h2>
+      <h3 className="text-lg ">Genre: {genre}</h3>
+      <p> Release Year: {release_year}</p>
       <div className="mt-4 bg-gray-800 p-4 rounded-lg shadow-lg">
         {abstract}
       </div>
