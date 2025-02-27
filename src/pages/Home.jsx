@@ -19,7 +19,13 @@ export default function Home() {
       <hr className="border-gray-600 mb-4" />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+          <MovieCard
+            key={movie.id}
+            image={movie.image}
+            title={movie.title}
+            vote={movie.avg_vote}
+            link={`movies/${movie.id}`}
+          />
         ))}
       </div>
     </div>
