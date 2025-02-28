@@ -3,16 +3,18 @@ import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import Stars from "../components/ui/Stars";
 
+const initialFormData = {
+  name: "",
+  text: "",
+  vote: 0,
+};
+
 export default function MoviePage() {
   const [movie, setMovie] = useState({});
   const { id } = useParams();
   const nav = useNavigate();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    vote: 1,
-    text: "",
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   const fetchMovie = () => {
     axios
@@ -29,28 +31,27 @@ export default function MoviePage() {
 
   useEffect(fetchMovie, [id, nav]);
 
-  const handleFormChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+  const handleFormChange = (fieldName, fieldValue) => {
+    setFormData((currentFormData) => {
+      return {
+        ...currentFormData,
+        [fieldName]: fieldValue,
+      };
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, vote, text } = formData;
 
     axios
-      .post(`/movies/${id}/reviews`, { name, vote, text })
-      .then((res) => {
-        setMovie((prevState) => ({
-          ...prevState,
-          reviews: [...prevState.reviews, res.data],
-        }));
-        setFormData({ name: "", vote: 1, text: "" }); // Reset form
+      .post(`/movies/${id}/reviews`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .catch((err) => {
-        console.error("Error submitting review:", err);
+      .then(() => {
+        setFormData(initialFormData);
+        fetchMovie();
       });
   };
 
@@ -95,7 +96,6 @@ export default function MoviePage() {
         <p className="text-gray-400">No reviews yet.</p>
       )}
 
-      {/* Form per aggiungere una recensione */}
       <h2 className="text-2xl font-bold mt-6">Add a Review</h2>
       <form onSubmit={handleSubmit} className="mt-4 space-y-4">
         <div>
@@ -110,7 +110,7 @@ export default function MoviePage() {
             id="name"
             name="name"
             value={formData.name}
-            onChange={handleFormChange}
+            onChange={(e) => handleFormChange("name", e.target.value)}
             className="mt-2 p-2 w-full rounded-lg bg-gray-700 text-white"
             required
           />
@@ -126,7 +126,7 @@ export default function MoviePage() {
             id="vote"
             name="vote"
             value={formData.vote}
-            onChange={handleFormChange}
+            onChange={(e) => handleFormChange("vote", e.target.value)}
             className="mt-2 p-2 w-full rounded-lg bg-gray-700 text-white"
             required
           >
@@ -148,7 +148,7 @@ export default function MoviePage() {
             id="text"
             name="text"
             value={formData.text}
-            onChange={handleFormChange}
+            onChange={(e) => handleFormChange("text", e.target.value)}
             className="mt-2 p-2 w-full rounded-lg bg-gray-700 text-white"
             rows="4"
             required
