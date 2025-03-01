@@ -55,8 +55,16 @@ export default function MoviePage() {
       });
   };
 
-  const { title, director, genre, release_year, abstract, image, reviews } =
-    movie;
+  const {
+    title,
+    director,
+    genre,
+    release_year,
+    abstract,
+    image,
+    reviews,
+    avg_vote,
+  } = movie;
 
   return (
     <div className="container mx-auto p-3 text-white bg-blue-900 rounded-lg shadow-lg mt-4">
@@ -70,6 +78,9 @@ export default function MoviePage() {
         </div>
         <div className="flex-grow">
           <h1 className="text-4xl font-bold">{title}</h1>
+          <p className="mt-4 mb-4">
+            <Stars vote={avg_vote} />
+          </p>
           <h2 className="text-xl mt-2">Director: {director}</h2>
           <h3 className="text-lg mt-1">Genre: {genre}</h3>
           <p className="mt-1">Release Year: {release_year}</p>
