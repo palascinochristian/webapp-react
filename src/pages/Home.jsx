@@ -1,17 +1,23 @@
 import axios from "../api/axios";
 import { useEffect, useState } from "react";
 import MovieCard from "../components/ui/MovieCard";
+import { useLoadingContext } from "../contexts/Loading";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
+  const { setIsLoading } = useLoadingContext();
 
   const fetchMovies = () => {
-    axios.get("/movies").then((res) => {
-      setMovies(res.data);
-    });
+    setIsLoading(true);
+    axios
+      .get("/movies")
+      .then((res) => {
+        setMovies(res.data);
+      })
+      .finally(() => setIsLoading(false));
   };
 
-  useEffect(fetchMovies, []);
+  useEffect(fetchMovies, [setIsLoading]);
 
   return (
     <div className="container mx-auto p-6 text-white">

@@ -5,17 +5,20 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import MoviePage from "./pages/MoviePage";
 import NotFound from "./pages/NotFound";
+import { LoadingProvider } from "./contexts/Loading";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route index path="/" element={<Home />} />
-          <Route path="/movies/:id" element={<MoviePage />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <LoadingProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route index path="/" element={<Home />} />
+            <Route path="/movies/:id" element={<MoviePage />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </LoadingProvider>
   );
 }

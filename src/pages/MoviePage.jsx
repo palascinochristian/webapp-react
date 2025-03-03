@@ -2,6 +2,7 @@ import axios from "../api/axios";
 import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import Stars from "../components/ui/Stars";
+import { useLoadingContext } from "../contexts/Loading";
 
 const initialFormData = {
   name: "",
@@ -13,10 +14,12 @@ export default function MoviePage() {
   const [movie, setMovie] = useState({});
   const { id } = useParams();
   const nav = useNavigate();
+  const { setIsLoading } = useLoadingContext();
 
   const [formData, setFormData] = useState(initialFormData);
 
   const fetchMovie = () => {
+    setIsLoading(true);
     axios
       .get(`/movies/${id}`)
       .then((res) => {
@@ -26,7 +29,8 @@ export default function MoviePage() {
         if (err.status === 404) {
           nav("/404");
         }
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   useEffect(fetchMovie, [id, nav]);
@@ -84,6 +88,7 @@ export default function MoviePage() {
           <h2 className="text-xl mt-2">Director: {director}</h2>
           <h3 className="text-lg mt-1">Genre: {genre}</h3>
           <p className="mt-1">Release Year: {release_year}</p>
+
           <div className="mt-4 bg-gray-800 p-4 rounded-lg shadow-lg">
             <p>{abstract}</p>
           </div>
